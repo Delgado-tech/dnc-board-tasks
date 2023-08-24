@@ -1,8 +1,6 @@
 {
   "name": "express",
   "version": "1.0.0",
-  "description": "",
-  "main": "./src/server.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "server": "concurrently \"tsc -w\" \"nodemon ./dist/server.js\"",
