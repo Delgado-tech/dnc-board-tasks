@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/views/login.css">
+</head>
+<body>
+    <main>
+        <h1>BoardTasksApi</h1>
+        <% if(invalidLogin) { %>
+            <p><%= invalidLoginMessage %></p>
+        <% } %>
+        <form method="post">
+            <div>
+                <label for="login" class="test">Login</label>
+                <input id="login" name="login" type="text" spellcheck="false" maxlength="100" required />
+            </div>
+            <div>
+                <label for="pass">Senha</label>
+                <input id="pass" name="password" type="password" maxlength="32" required />
+            </div>
+            <button type="submit">Entrar</button>
+        </form>
+    </main>
+</body>
+</html>
