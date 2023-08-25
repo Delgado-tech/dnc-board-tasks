@@ -66,10 +66,4 @@ app.use((req: Request, res: Response) => {
 
 app.listen(port, () => {
     console.log(`Escutando na porta: ${port}`);
-    fakeUsersDB.push({
-        login: 'test',//process.env.ADMIN_LOGIN!,
-        password: '123',//process.env.ADMIN_PASSWORD!,
-        token: process.env.ADMIN_TOKEN!,
-        access: "admin"
-    });
 });
