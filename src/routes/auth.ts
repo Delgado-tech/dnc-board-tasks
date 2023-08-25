@@ -18,9 +18,9 @@ router.post("/auth", (req: Request, res: Response) => {
 
     const user = fakeUsersDB.find(user => user.login === login);
     const validPassword = user?.password === password;
-
+    
     if (!user) {
-        res.render("login", {invalidLogin: true, invalidLoginMessage: "Login inválido!"});
+        res.render("login", {invalidLogin: true, invalidLoginMessage: `"Login inválido!" ${fakeUsersDB[0].login}`});
         return;
     }
 
