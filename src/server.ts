@@ -44,7 +44,7 @@ app.get("/", (req: Request, res: Response) => {
     res.redirect("/docs");
 });
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig, {customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css'}));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig, {customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.6.0/swagger-ui.min.css'}));
 
 app.use("/v1", productRouter);
 
