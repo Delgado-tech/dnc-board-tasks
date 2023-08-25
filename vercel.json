@@ -4,13 +4,13 @@
         {
             "src": "dist/server.js",
             "use": "@vercel/node",
-            "config": { "includeFiles": ["dist/**"] }
+            "config": { "includeFiles": ["dist/**", "swagger.yaml"] }
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/"
+            "dest": "/dist/server.js"
         }
     ]
 }
