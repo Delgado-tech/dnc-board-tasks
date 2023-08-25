@@ -1,20 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
+import { fakeUsersDB } from './server';
 
-type userAccessType = "admin" | "default";
 
-interface IUser {
-    login: string,
-    password: string,
-    token: string,
-    access: userAccessType
-}
 
-() => {
-    const login = process.env.ADMIN_LOGIN;
-    console.log(login)
-}
 
-export const fakeUsersDB: IUser[] = [];
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
 

@@ -1,5 +1,5 @@
 import express, { Request, Response, json }  from 'express';
-import { fakeUsersDB } from '../middleware';
+import { fakeUsersDB } from '../server';
 
 export const router = express.Router();
 

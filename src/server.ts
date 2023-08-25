@@ -1,15 +1,25 @@
-import express, { Request, Response, json } from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import cookieParse from 'cookie-parser';
 import { router as productRouter } from './routes/product';
 import { router as authRouter } from './routes/auth';
-import { auth, fakeUsersDB } from './middleware';
+import { auth } from './middleware';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'js-yaml';
 import fs from 'fs';
 
 
+type userAccessType = "admin" | "default";
+
+interface IUser {
+    login: string,
+    password: string,
+    token: string,
+    access: userAccessType
+}
+
+export const fakeUsersDB: IUser[] = [];
 
 const app = express();
 const port: number = 5173;
