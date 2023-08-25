@@ -20,8 +20,7 @@ router.post("/auth", (req: Request, res: Response) => {
     const validPassword = user?.password === password;
     
     if (!user) {
-        let [x] = fakeUsersDB;
-        res.render("login", {invalidLogin: true, invalidLoginMessage: `"Login inválido!" ${x.login} ${fakeUsersDB.length}`});
+        res.render("login", {invalidLogin: true, invalidLoginMessage: `"Login inválido!" ${fakeUsersDB.length}`});
         return;
     }
 
