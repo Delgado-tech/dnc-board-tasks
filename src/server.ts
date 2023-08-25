@@ -10,7 +10,7 @@ import YAML from 'js-yaml';
 //import swaggerConfig from './swagger.json';
 import fs from 'fs';
 
-const swaggerConfig = YAML.load(fs.readFileSync("swagger.yaml", "utf-8")) as any;
+const swaggerConfig = YAML.load(fs.readFileSync("src/swagger.yaml", "utf-8")) as any;
 
 const app = express();
 const port: number = 5173;
