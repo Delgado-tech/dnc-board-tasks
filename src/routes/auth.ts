@@ -1,5 +1,5 @@
 import express, { Request, Response, json }  from 'express';
-import { fakeUsersDB } from '../server';
+import { fakeUsersDB } from '../middleware';
 
 export const router = express.Router();
 
@@ -11,15 +11,6 @@ router.get("/auth", (req: Request, res: Response) => {
     res.clearCookie("token");
     res.clearCookie("access");
     res.render("login", {invalidLogin: false});
-
-    if(fakeUsersDB.length === 0) {
-        fakeUsersDB.push({
-            login: 'test',//process.env.ADMIN_LOGIN!,
-            password: '123',//process.env.ADMIN_PASSWORD!,
-            token: process.env.ADMIN_TOKEN!,
-            access: "admin"
-        });
-    }
 });
 
 router.post("/auth", (req: Request, res: Response) => {

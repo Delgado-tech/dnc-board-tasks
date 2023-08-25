@@ -10,16 +10,6 @@ import YAML from 'js-yaml';
 import fs from 'fs';
 
 
-type userAccessType = "admin" | "default";
-
-interface IUser {
-    login: string,
-    password: string,
-    token: string,
-    access: userAccessType
-}
-
-export const fakeUsersDB: IUser[] = [];
 
 const app = express();
 const port: number = 5173;
