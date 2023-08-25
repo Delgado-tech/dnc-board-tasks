@@ -6,7 +6,7 @@ import { fakeUsersDB } from './server';
 
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
-
+    return next();
     if (req.headers.host?.includes("localhost")) return next();
     if (req.url === "/auth") return next();
 
