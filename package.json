@@ -2,7 +2,7 @@
   "name": "express",
   "version": "1.0.0",
   "scripts": {
-    "build": "rimraf ./dist && tsc && copyfiles ./src/swagger/*.yaml ./dist",
+    "build": "rimraf ./dist && tsc && copyfiles *.yaml ./dist",
     "server": "concurrently \"tsc -w\" \"nodemon ./dist/server.js\"",
     "dev": "npm run build && npm run server"
   },

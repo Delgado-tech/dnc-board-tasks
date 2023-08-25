@@ -13,7 +13,7 @@ const app = express();
 const port: number = 5173;
 
 /* =========== read YAML ============== */
-const file = fs.readFileSync('public/src/swagger/swagger.yaml', 'utf-8');
+const file = fs.readFileSync('swagger.yaml', 'utf-8');
 const swaggerConfig = yaml.parse(file);
 /* ==================================== */
 
