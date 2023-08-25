@@ -5,16 +5,16 @@ import { router as productRouter } from './routes/product';
 import { router as authRouter } from './routes/auth';
 import { /*auth,*/ fakeUsersDB } from './middleware';
 import dotenv from 'dotenv';
-//import swaggerUi from 'swagger-ui-express';
-//import yaml from 'yaml';
-//import fs from 'fs';
+import swaggerUi from 'swagger-ui-express';
+import yaml from 'yaml';
+import fs from 'fs';
 
 const app = express();
 const port: number = 5173;
 
 /* =========== read YAML ============== */
-//const file = fs.readFileSync('./src/swagger/swagger.yaml', 'utf-8');
-//const swaggerConfig = yaml.parse(file);
+const file = fs.readFileSync('./src/swagger/swagger.yaml', 'utf-8');
+const swaggerConfig = yaml.parse(file);
 /* ==================================== */
 
 
@@ -41,7 +41,7 @@ app.get("/", (req: Request, res: Response) => {
     res.redirect("/docs");
 });
 
-//app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 
 app.use("/v1", productRouter);
 
