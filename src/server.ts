@@ -6,15 +6,16 @@ import { router as authRouter } from './routes/auth';
 import { /*auth,*/ fakeUsersDB } from './middleware';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
-import yaml from 'yaml';
-import fs from 'fs';
+import swaggerConfig from './swagger.json';
+//import yaml from 'yaml';
+//import fs from 'fs';
 
 const app = express();
 const port: number = 5173;
 
 /* =========== read YAML ============== */
-const file = fs.readFileSync('swagger.yaml', 'utf-8');
-const swaggerConfig = yaml.parse(file);
+//const file = fs.readFileSync('swagger.yaml', 'utf-8');
+//const swaggerConfig = yaml.parse(file);
 /* ==================================== */
 
 
