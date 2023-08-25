@@ -6,9 +6,11 @@ import { router as productRouter } from './routes/product';
 import { /*auth,*/ fakeUsersDB } from './middleware';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
-import swaggerConfig from './swagger.json';
-//import yaml from 'yaml';
-//import fs from 'fs';
+import YAML from 'js-yaml';
+//import swaggerConfig from './swagger.json';
+import fs from 'fs';
+
+const swaggerConfig = YAML.load(fs.readFileSync("swagger.yaml", "utf-8")) as any;
 
 const app = express();
 const port: number = 5173;
@@ -42,7 +44,7 @@ app.get("/", (req: Request, res: Response) => {
     res.redirect("/docs");
 });
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig,{customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css'}));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig, {customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css'}));
 
 app.use("/v1", productRouter);
 
