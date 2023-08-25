@@ -4,6 +4,9 @@ info:
   version: '1.0.0'
 servers:
   - url: http://localhost:5173/
+    description: Localhost
+  - url: https://dnc-board-tasks.vercel.app/
+    description: Production
 paths:
   /v1/products/{id}:
     get:
