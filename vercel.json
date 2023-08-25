@@ -14,7 +14,7 @@
         },
         {
             "src": "/docs/(.*)",
-            "dest": "/docs/serve.js"
+            "dest": "/docs/server.js"
         }
     ]
 }
