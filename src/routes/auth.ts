@@ -1,4 +1,4 @@
-import express, { Request, Response }  from 'express';
+import express, { Request, Response, json }  from 'express';
 import { fakeUsersDB } from '../middleware';
 
 export const router = express.Router();
@@ -20,7 +20,8 @@ router.post("/auth", (req: Request, res: Response) => {
     const validPassword = user?.password === password;
     
     if (!user) {
-        res.render("login", {invalidLogin: true, invalidLoginMessage: `"Login inválido!" ${fakeUsersDB[0].login}`});
+        let [x] = fakeUsersDB;
+        res.render("login", {invalidLogin: true, invalidLoginMessage: `"Login inválido!" ${x.login} ${fakeUsersDB.length}`});
         return;
     }
 
