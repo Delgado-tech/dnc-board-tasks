@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction }  from 'express';
 import { fakeUsersDB } from '../middleware';
-import {v4 as tokenGen} from 'uuid';
 
 export const router = express.Router();
 
