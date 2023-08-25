@@ -2,7 +2,7 @@ import express, { Request, Response, json } from 'express';
 import cors from 'cors';
 import cookieParse from 'cookie-parser';
 import { router as productRouter } from './routes/product';
-import { router as authRouter } from './routes/auth';
+//import { router as authRouter } from './routes/auth';
 import { /*auth,*/ fakeUsersDB } from './middleware';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
@@ -42,7 +42,7 @@ app.get("/", (req: Request, res: Response) => {
     res.redirect("/docs");
 });
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig,{customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css'}));
 
 app.use("/v1", productRouter);
 
