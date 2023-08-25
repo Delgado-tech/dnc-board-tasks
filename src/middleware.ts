@@ -17,6 +17,7 @@ interface IUser {
 export const fakeUsersDB: IUser[] = [];
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
+    console.log(fakeUsersDB)
     if (req.headers.host?.includes("localhost")) return next();
     if (req.url === "/auth") return next();
 
