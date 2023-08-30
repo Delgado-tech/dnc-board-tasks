@@ -3,11 +3,12 @@ import cors from 'cors';
 import cookieParse from 'cookie-parser';
 import { router as productRouter } from './routes/product';
 import { router as authRouter } from './routes/auth';
-import { auth } from './middleware';
+import { auth } from './middlewares/access';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'js-yaml';
 import fs from 'fs';
+import dbConnect from './middlewares/db-conect';
 
 
 
@@ -43,7 +44,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig,{
     customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.css',
 }));
 
-app.use("/v1", productRouter);
+app.use("/v1", dbConnect, productRouter);
 
 app.use(authRouter);
 
