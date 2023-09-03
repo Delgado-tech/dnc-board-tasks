@@ -1,4 +1,6 @@
 import express, { Request, Response } from 'express';
+import productSchema from '../models/productSchema';
+import errorHandler from '../functions/error-handler';
 
 interface IProduct {
     id: number,
@@ -9,15 +11,24 @@ interface IProduct {
 
 export const router = express.Router();
 
-const fakeProductDB: IProduct[] = [];
-let currentId: number = 0;
+router.get("/products", async (req: Request, res: Response) => {
+    try {
+        const products = await productSchema.find();
 
-router.get("/products", (req: Request, res: Response) => {
-    res.status(200).json(fakeProductDB);
+        if (!products || products.length === 0) {
+            throw new Error("Nenhum produto encontrado!");
+        }
+
+        res.status(200).json(products);
+
+    } catch (error) {
+        errorHandler(res, error);
+    }
 });
 
 router.get("/products/:id", (req: Request, res: Response) => {
-    const product = fakeProductDB.find(prod => prod.id === Number(req.params.id));
+    const id = req.params.id;
+    const product = productSchema.findOne({ _id: id });
 
     if (!product) {
         res.status(404).json({message: "Product not found!"});
@@ -27,29 +38,26 @@ router.get("/products/:id", (req: Request, res: Response) => {
     res.status(200).json(product);
 });
 
-router.post("/products", (req: Request, res: Response) => {
-    const { name, description, price } = req.body;
-    console.log(req.body)
-    if (!name) {
-        res.status(400).json({message: "Name can't be empty!"});
-        return;
+router.post("/products", async (req: Request, res: Response) => {
+    try {
+        const { name, description, price } = req.body;
+        const dbResponse = await productSchema.create({ name, description, price });
+
+        res.status(200).json(dbResponse);
+    } catch(error) {
+        errorHandler(res, error);
     }
 
-    const errProductExists = fakeProductDB.find(prod => prod.name === name);
-    if (errProductExists) {
-        res.status(400).json({message: "Product Already Exists!"});
-        return;
-    }
 
-    const product: IProduct = {
-        id: currentId,
-        name: name,
-        description: description ? description: "",
-        price: price ? price : 0
-    }
-
-    currentId++;
-
-    fakeProductDB.push(product);
-    res.status(201).json(product);
 });
+
+// router.put("/products/:id", (req: Request, res: Response) => {
+//     const product = fakeProductDB.find(prod => prod.id === Number(req.params.id));
+
+//     if (!product) {
+//         res.status(404).json({message: "Product not found!"});
+//         return;
+//     }
+
+//     res.status(200).json(product);
+// });

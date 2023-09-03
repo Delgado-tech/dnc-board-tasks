@@ -1,44 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
-
-
-
-type userAccessType = "admin" | "default";
-
-interface IUser {
-    login: string,
-    password: string,
-    token: string,
-    access: userAccessType
-}
-
-export const fakeUsersDB: IUser[] = [];
-
-
+import jwt from 'jsonwebtoken';
+import errorHandler from '../functions/error-handler';
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
-    if(fakeUsersDB.length === 0) {
-        fakeUsersDB.push({
-            login: process.env.ADMIN_LOGIN!,
-            password: process.env.ADMIN_PASSWORD!,
-            token: process.env.ADMIN_TOKEN!,
-            access: "admin"
-        });
-    }
-
-    if (req.headers.host?.includes("localhost")) return next();
+    //if (req.headers.host?.includes("localhost")) return next();
     if (req.url === "/auth") return next();
 
-    if (!req.cookies["token"]) {
+    const token = req.cookies["x-auth-token"] as string;
+
+    if (!token) {
         res.redirect("/auth");
         return;
     }
 
-    const tokenExists = fakeUsersDB.find(user => user.token === req.cookies["token"]);
-    if (!tokenExists) {
-        res.clearCookie("token");
-        res.redirect("/auth");
-        return;
-    }
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+        req.userJWT = decoded;
+        next();
 
-    next();
+    } catch (error) {
+        console.log(error);
+        errorHandler(res, "Error: Token inválido!");
+    }
 }

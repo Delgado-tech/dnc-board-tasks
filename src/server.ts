@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import cookieParse from 'cookie-parser';
 import { router as productRouter } from './routes/product';
+import { router as userRouter } from './routes/user';
 import { router as authRouter } from './routes/auth';
 import { auth } from './middlewares/access';
 import dotenv from 'dotenv';
@@ -39,12 +40,13 @@ app.get("/", (req: Request, res: Response) => {
     res.redirect("/docs");
 });
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig,{
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig, {
     customJs: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui-standalone-preset.min.js',
     customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.css',
 }));
 
 app.use("/v1", dbConnect, productRouter);
+app.use("/v1", dbConnect, userRouter);
 
 app.use(authRouter);
 

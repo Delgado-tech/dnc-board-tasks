@@ -1,6 +1,5 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
-import ErrorHandler from '../functions/error-handler';
 import errorHandler from '../functions/error-handler';
 
 export default async function dbConnect(req: Request, res: Response, next: NextFunction) {

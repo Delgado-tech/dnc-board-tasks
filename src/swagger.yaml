@@ -10,6 +10,7 @@ servers:
 paths:
   /v1/products/{id}:
     get:
+      tags: ["Product"]
       responses:
         '200':
           description: OK
@@ -19,6 +20,7 @@ paths:
                 $ref: "#/components/schemas/product"
   /v1/products:
     get:
+      tags: ["Product"]
       responses:
         '200':
           description: OK
@@ -27,6 +29,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/products"
     post:
+      tags: ["Product"]
       requestBody:
         content:
           application/json:
@@ -52,6 +55,63 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error_msg"
+  /v1/users:
+    get:
+      tags: ["User"]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users"
+    post:
+      tags: ["User"]
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: "#/components/schemas/user"
+      responses:
+        '201':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        '400':
+          description: 'Invalid Request'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_msg"
+  /v1/users/{id}:
+    delete:
+      tags: ["User"]
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: 'OK'
+        '400':
+          description: 'Invalid Request'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_msg"
 components:
   schemas:
     product:
@@ -69,6 +129,21 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/product"
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string   
+        password:
+          type: string   
+    users:
+      type: array
+      items:
+        $ref: "#/components/schemas/user"
     error_msg:
       type: object
       properties:
