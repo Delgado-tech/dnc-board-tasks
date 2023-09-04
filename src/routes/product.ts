@@ -1,13 +1,7 @@
 import express, { Request, Response } from 'express';
 import productSchema from '../models/productSchema';
 import errorHandler from '../functions/error-handler';
-
-interface IProduct {
-    id: number,
-    name: string,
-    description: string,
-    price: number
-}
+import jwt from 'jsonwebtoken';
 
 export const router = express.Router();
 
@@ -41,9 +35,16 @@ router.get("/products/:id", (req: Request, res: Response) => {
 router.post("/products", async (req: Request, res: Response) => {
     try {
         const { name, description, price } = req.body;
-        const dbResponse = await productSchema.create({ name, description, price });
+        const author = req.userJWT.id;
 
-        res.status(200).json(dbResponse);
+        const dbResponse = await productSchema.create({ name, description, price, author });
+
+        res.status(200).json({
+            status: "OK",
+            message: "Product has been created!",
+            response: dbResponse
+        });
+
     } catch(error) {
         errorHandler(res, error);
     }
@@ -51,13 +52,40 @@ router.post("/products", async (req: Request, res: Response) => {
 
 });
 
-// router.put("/products/:id", (req: Request, res: Response) => {
-//     const product = fakeProductDB.find(prod => prod.id === Number(req.params.id));
+router.put("/products/:id", async (req: Request, res: Response) => {
+    const productID = req.params.id;
+    const { name, description, price } = req.body;
 
-//     if (!product) {
-//         res.status(404).json({message: "Product not found!"});
-//         return;
-//     }
+    try {
+        const dbResponse = await productSchema.updateOne({ _id: productID, author: req.userJWT.id }, { name, description, price } );
 
-//     res.status(200).json(product);
-// });
+        if (dbResponse.modifiedCount > 0) {
+            const product = await productSchema.findOne({ _id: productID, author: req.userJWT.id  }).populate("author");
+            return res.status(200).json({
+                status: "OK",
+                message: "Product has been updated!",
+                response: product
+            });
+        }
+
+    } catch(error) {
+        errorHandler(res, error);
+    }
+});
+
+router.delete("/products/:id", async (req: Request, res: Response) => {
+    const productID = req.params.id;
+
+    try {
+        const dbResponse = await productSchema.deleteOne({ _id: productID, author: req.userJWT.id });
+
+        res.status(200).json({
+            status: "OK",
+            message: "Product has been deleted!",
+            response: dbResponse
+        });
+
+    } catch(error) {
+        errorHandler(res, error);
+    }
+});

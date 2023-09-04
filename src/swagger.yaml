@@ -11,6 +11,11 @@ paths:
   /v1/products/{id}:
     get:
       tags: ["Product"]
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
       responses:
         '200':
           description: OK
@@ -18,6 +23,43 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/product"
+    put:
+      tags: ["Product"]
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/product"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Invalid Request'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_msg"
+    delete:
+      tags: ["Product"]
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Invalid Request'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_msg"
   /v1/products:
     get:
       tags: ["Product"]
