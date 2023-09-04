@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+export type userAcessLevel = "admin" | "default";
+
 const schema =  new mongoose.Schema({
     name: {
         type: String,
@@ -13,6 +15,11 @@ const schema =  new mongoose.Schema({
         lowercase: true
     },
     password: {
+        type: String,
+        required: true,
+        select: false
+    },
+    acessLevel: {
         type: String,
         required: true,
         select: false

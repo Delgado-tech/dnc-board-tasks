@@ -23,8 +23,9 @@ router.post("/auth", dbConnect, async (req: Request, res: Response) => {
 
     const user = await userSchema.findOne({ email: login }).select("+password");
     if (!user) return invalidLogin();
-
+    
     const validPassword = await bcript.compare(password, user.password);
+
     if (!validPassword) return invalidLogin();
     
 

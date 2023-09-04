@@ -37,6 +37,12 @@ router.post("/products", async (req: Request, res: Response) => {
         const { name, description, price } = req.body;
         const author = req.userJWT.id;
 
+        const authorProducts = await productSchema.find({ author });
+
+        if (authorProducts.length > 50) {
+            throw new Error("You've reached the maximum limit of products your account can create!");
+        }
+
         const dbResponse = await productSchema.create({ name, description, price, author });
 
         res.status(200).json({

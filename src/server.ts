@@ -34,19 +34,17 @@ app.use(cors());
 
 
 /* =========== routes ================= */
-app.all("*", auth);
-
 app.get("/", (req: Request, res: Response) => {
     res.redirect("/docs");
 });
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig, {
+app.use("/docs", dbConnect, auth, swaggerUi.serve, swaggerUi.setup(swaggerConfig, {
     customJs: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui-standalone-preset.min.js',
     customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.css',
 }));
 
-app.use("/v1", dbConnect, productRouter);
-app.use("/v1", dbConnect, userRouter);
+app.use("/v1", dbConnect, auth, productRouter);
+app.use("/v1", dbConnect, auth, userRouter);
 
 app.use(authRouter);
 

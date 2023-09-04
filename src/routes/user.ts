@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import bcript from 'bcrypt';
-import userSchema from '../models/userSchema';
+import userSchema, { userAcessLevel } from '../models/userSchema';
 import errorHandler from '../functions/error-handler';
 import validator from 'validator';
 
@@ -12,7 +12,12 @@ router.get("/users", async (req: Request, res: Response) => {
 
 router.post("/users", async (req: Request, res: Response) => {
     try {
-        const { name, email, password } = req.body;
+        const loggedUser = await userSchema.findOne({ _id: req.userJWT.id }).select("+acessLevel");
+        if (loggedUser.acessLevel !== "admin" as userAcessLevel) {
+            throw new Error("You don't have admin level for create a user!");
+        }
+
+        const { name, email, password, acessLevel } = req.body;
 
         if (!validator.isEmail(email)) {
             throw new Error("Invalid Email!");
@@ -20,7 +25,7 @@ router.post("/users", async (req: Request, res: Response) => {
 
         const hashRounds = 10;
         const hashPassword = await bcript.hash(password, hashRounds);
-        const dbResponse = await userSchema.create({ name, email, password: hashPassword });
+        const dbResponse = await userSchema.create({ name, email, password: hashPassword, acessLevel });
     
         res.status(200).json({
             status: "OK",
@@ -38,14 +43,21 @@ router.post("/users", async (req: Request, res: Response) => {
 
 router.delete("/users/:id", async (req: Request, res: Response) => {
     try {
-        const { email, password } = req.body;
+        const loggedUser = await userSchema.findOne({ _id: req.userJWT.id }).select("+acessLevel");
+
+        if (loggedUser.acessLevel !== "admin" as userAcessLevel) {
+            throw new Error("You don't have admin level for delete a user!");
+        }
+
         const id = req.params.id;
 
-        const user = await userSchema.findOne({ _id: id }).select("+password");
-        const validEmail = user.email === email;
-        const validPassword = await bcript.compare(password, user.password);
+        if (id === req.userJWT.id) {
+            throw new Error("You can't delete your self!");
+        }
 
-        if (validEmail && validPassword) {
+        const user = await userSchema.findOne({ _id: id });
+
+        if (user) {
             const dbResponse = await userSchema.deleteOne({ _id: id });
 
             res.status(200).json({
@@ -55,7 +67,7 @@ router.delete("/users/:id", async (req: Request, res: Response) => {
             });
 
         } else {
-            throw new Error("Email ou senha inválidos!");
+            throw new Error("User not found!");
         }
     
     } catch (error) {

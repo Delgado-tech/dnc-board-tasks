@@ -1,6 +1,6 @@
 openapi: '3.1.0'
 info:
-  title: BoardTasks
+  title: ProductCreator
   version: '1.0.0'
 servers:
   - url: http://localhost:5173/
@@ -135,16 +135,6 @@ paths:
           name: id
           type: string
           required: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
       responses:
         '201':
           description: 'OK'
@@ -174,14 +164,14 @@ components:
     user:
       type: object
       properties:
-        id:
-          type: string
         name:
           type: string
         email:
           type: string   
         password:
           type: string   
+        acessLevel:
+          type: string
     users:
       type: array
       items:

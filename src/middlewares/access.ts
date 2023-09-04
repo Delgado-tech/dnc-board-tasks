@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import errorHandler from '../functions/error-handler';
+import userSchema from '../models/userSchema';
 
-export const auth = (req: Request, res: Response, next: NextFunction) => {
+export const auth = async (req: Request, res: Response, next: NextFunction) => {
     //if (req.headers.host?.includes("localhost")) return next();
     if (req.url === "/auth") return next();
 
@@ -14,7 +15,14 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+        const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+        const user = await userSchema.findOne({ _id: decoded.id });
+
+        if (!user) {
+            res.redirect("/auth");
+            return;
+        }
+
         req.userJWT = decoded;
         next();
 
