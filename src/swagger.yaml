@@ -3,10 +3,10 @@ info:
   title: ProductCreator
   version: '1.0.0'
 servers:
+  - url: https://dnc-product-creator.vercel.app/
+    description: Production
   - url: http://localhost:5173/
     description: Localhost
-  - url: https://dnc-board-tasks.vercel.app/
-    description: Production
 paths:
   /v1/products/{id}:
     get:
